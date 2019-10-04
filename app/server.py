@@ -32,7 +32,7 @@ async def download_file(url, dest):
 
 
 async def setup_learner():
-    await download_file(export_file_url, path / export_file_name)
+    # await download_file(export_file_url, path / export_file_name)
     try:
         learn = load_learner(path, export_file_name)
         return learn
@@ -59,11 +59,12 @@ async def homepage(request):
 
 @app.route('/analyze', methods=['POST'])
 async def analyze(request):
-    img_data = await request.form()
-    img_bytes = await (img_data['file'].read())
-    img = open_image(BytesIO(img_bytes))
-    prediction = learn.predict(img)[0]
-    return JSONResponse({'result': str(prediction)})
+    # img_data = await request.form()
+    # img_bytes = await (img_data['file'].read())
+    # img = open_image(BytesIO(img_bytes))
+    # prediction = learn.predict(img)[0]
+    # return JSONResponse({'result': str(prediction)})
+    return JSONResponse({'result': 'some result'})
 
 
 if __name__ == '__main__':
