@@ -43,7 +43,7 @@ async def setup_learner():
             message = "\n\nThis model was trained with an old version of fastai and will not work in a CPU environment.\n\nPlease update the fastai library in your training environment and export your model again.\n\nSee instructions for 'Returning to work' at https://course.fast.ai."
             raise RuntimeError(message)
         else:
-            raise
+            raise RuntimeError("some error")
 
 
 loop = asyncio.get_event_loop()
