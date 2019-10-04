@@ -12,7 +12,7 @@ from starlette.staticfiles import StaticFiles
 # export_file_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
 export_file_url = 'https://www.dropbox.com/s/7r1r4w1nhigf5mi/finalized_model.sav?dl=1'
 # export_file_name = 'export.pkl'
-export_file_name = 'finalized_model.pkl'
+export_file_name = 'finalized_model.sav'
 
 classes = ['black', 'grizzly', 'teddys']
 # classes = ['True', 'False']
