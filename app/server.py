@@ -10,9 +10,11 @@ from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
 # export_file_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
-export_file_url = 'https:f//www.dropbox.com/s/m6v89wemmdojx49/list_pickle.pkl?dl=1'
+# export_file_url = 'https://www.dropbox.com/s/m6v89wemmdojx49/list_pickle.pkl?dl=1'
+export_file_url = 'https://www.dropbox.com/s/twqondhw5szummi/finalized_model.pkl?dl=1'
 # export_file_name = 'export.pkl'
-export_file_name = 'list_pickle.pkl'
+# export_file_name = 'list_pickle.pkl'
+export_file_name = 'finalized_model.pkl'
 
 classes = ['black', 'grizzly', 'teddys']
 # classes = ['True', 'False']
@@ -49,6 +51,7 @@ async def setup_learner():
 
 loop = asyncio.get_event_loop()
 tasks = [asyncio.ensure_future(setup_learner())]
+print("it goes through this line!")
 learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
 loop.close()
 
