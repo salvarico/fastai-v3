@@ -9,50 +9,26 @@ from starlette.middleware.cors import CORSMiddleware
 from starlette.responses import HTMLResponse, JSONResponse
 from starlette.staticfiles import StaticFiles
 
-# export_file_url = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
-export_file_url = 'https://www.dropbox.com/s/m6v89wemmdojx49/list_pickle.pkl?dl=1'
-# export_file_url = 'https://www.dropbox.com/s/twqondhw5szummi/finalized_model.pkl?dl=1'
-# export_file_name = 'export.pkl'
-export_file_name = 'list_pickle.pkl'
-# export_file_name = 'finalized_model.pkl'
+export_file_url3 = 'https://www.dropbox.com/s/6bgq8t6yextloqp/export.pkl?raw=1'
+export_file_url2 = 'https://drive.google.com/'
+export_file_url = 'https://drive.google.com/open?id=10erSaLgIJy9XwIEc0GztnsUm1QjYajKH'
+export_file_name = 'export.pkl'
+export_file_name2 = 'open?id=1HknzMdow0_4ItkKqzpGk-h0ais61zck3'
+export_file_name3 = 'trained_model.pth'
 
-classes = ['black', 'grizzly', 'teddys']
-# classes = ['True', 'False']
+path1 = Path('/app')
+#path1 = Path(export_file_url)
+learn1 = load_learner(path1, 'model.pkl')
+
+#classes = ['black', 'grizzly', 'teddys']
+#classes = ['Abyssinian', 'Bengal', 'Birman', 'Bombay', 'British_Shorthair', 'Egyptian_Mau', 'Maine_Coon', 'Persian', 'Ragdoll', 'Russian_Blue', 'Siamese', 'Sphynx', 'american_bulldog', 'american_pit_bull_terrier', 'basset_hound', 'beagle', 'boxer', 'chihuahua', 'english_cocker_spaniel', 'english_setter', 'german_shorthaired', 'great_pyrenees', 'havanese', 'japanese_chin', 'keeshond', 'leonberger', 'miniature_pinscher', 'newfoundland', 'pomeranian', 'pug', 'saint_bernard', 'samoyed', 'scottish_terrier', 'shiba_inu', 'staffordshire_bull_terrier', 'wheaten_terrier', 'yorkshire_terrier']
+
 path = Path(__file__).parent
 
 app = Starlette()
 app.add_middleware(CORSMiddleware, allow_origins=['*'], allow_headers=['X-Requested-With', 'Content-Type'])
 app.mount('/static', StaticFiles(directory='app/static'))
 
-
-async def download_file(url, dest):
-    if dest.exists(): return
-    async with aiohttp.ClientSession() as session:
-        async with session.get(url) as response:
-            data = await response.read()
-            with open(dest, 'wb') as f:
-                f.write(data)
-
-
-async def setup_learner():
-    await download_file(export_file_url, path / export_file_name)
-    try:
-        learn = load_learner(path, export_file_name)
-        return learn
-    except RuntimeError as e:
-        if len(e.args) > 0 and 'CPU-only machine' in e.args[0]:
-            print(e)
-            message = "\n\nThis model was trained with an old version of fastai and will not work in a CPU environment.\n\nPlease update the fastai library in your training environment and export your model again.\n\nSee instructions for 'Returning to work' at https://course.fast.ai."
-            raise RuntimeError(message)
-        else:
-            raise
-
-
-loop = asyncio.get_event_loop()
-tasks = [asyncio.ensure_future(setup_learner())]
-print("it goes through this line!")
-learn = loop.run_until_complete(asyncio.gather(*tasks))[0]
-loop.close()
 
 
 @app.route('/')
@@ -63,12 +39,12 @@ async def homepage(request):
 
 @app.route('/analyze', methods=['POST'])
 async def analyze(request):
-    # img_data = await request.form()
-    # img_bytes = await (img_data['file'].read())
-    # img = open_image(BytesIO(img_bytes))
-    # prediction = learn.predict(img)[0]
-    # return JSONResponse({'result': str(prediction)})
-    return JSONResponse({'result': 'some result'})
+    img_data = await request.form()
+    img_bytes = await (img_data['file'].read())
+    img = open_image(BytesIO(img_bytes))
+    print('&&&&&&&&&')
+    prediction = learn1.predict(img)[0]
+    return JSONResponse({'result': str(prediction)})
 
 
 if __name__ == '__main__':
